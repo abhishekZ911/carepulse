@@ -348,3 +348,11 @@
 .PhoneInputInput::placeholder {
   color: #1a1d21;
 }
+
+:root {
+  --fontSans: 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-sans {
+  font-family: var(--fontSans);
+}
