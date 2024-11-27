@@ -1,6 +1,6 @@
 import * as sdk from 'node-appwrite';
 
-const {
+export const {
     PROJECT_ID,
     API_KEY,
     DB_ID,
@@ -14,9 +14,10 @@ const {
 
 const client = new sdk.Client()
 
+console.log(PROJECT_ID, API_KEY, ENDPOINT)
 client.setEndpoint(ENDPOINT!)
 .setProject(PROJECT_ID!)
-.setKey(API_KEY!);
+.setKey(API_KEY !);
 
 export const databases = new sdk.Databases(client);
 export const storage = new sdk.Storage(client);

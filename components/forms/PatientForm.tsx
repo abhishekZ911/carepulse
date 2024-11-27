@@ -13,6 +13,9 @@ import { useState } from "react"
 import { UserFormValidation } from "@/lib/validations"
 import { User } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { createUser } from "@/lib/actions/patient.actions"
+import { log } from "console"
+import 'dotenv/config'
 
 
 export enum FormFieldType{
@@ -20,7 +23,7 @@ export enum FormFieldType{
   TEXTAREA = "textarea",
   PHONE_INPUT = "phoneInput",
   CHECKBOX = "checkbox",
-  DATE_PICKER = "datePicker",
+  DATE_PICKER = "datePicker", 
   SELECT = 'select',
   SKELETON = "skeleton"
 }
@@ -33,33 +36,53 @@ export function PatientForm() {
   const form = useForm<z.infer<typeof UserFormValidation>>({
     resolver: zodResolver(UserFormValidation),
     defaultValues: {
-      username: "",
+      name: "",
       email: "",
       phone: "",
     },
   })
 
+  console.log(process.env.PROJECT_ID)
+
   // 2. Define a submit handler.
-  async function onSubmit({username, email, phone}: z.infer<typeof UserFormValidation>) {
-    setIsLoading(true);
+
+  
+  const onSubmit = async ({name, email, phone}: z.infer<typeof UserFormValidation>) => {
+    console.log(isLoading)
+    // setIsLoading(true);
+    const userData = {
+      name: name,
+      email: email,
+      phone: phone
+    }
     try {
       
-      // const userData = {
-      //   username, email, phone
-      // }
+      
 
-      // await user = await createUser(userData);
+      console.log(userData)
+    
+      const newUser = await createUser(userData) 
+      console.log(userData)
+      
+      if (!newUser) throw Error;
+      
 
-      // if(user) router.push(`/patients/${user.$id}`)
+      if(newUser) {
+        router.push(`/patients/${newUser.$id}`)
+    setIsLoading(false);
+
+      }
     } catch (error) {
       console.log(error);
     }
     
   }
 
+  const onInvalid = (errors: any) => console.error(errors)
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex-1">
+      <form onSubmit={form.handleSubmit(onSubmit, onInvalid)} className="space-y-8 flex-1">
         <section className="mb-12 space-y-4">
           <h1 className="header">Hi there 👋</h1>
           <p className="text-dark-700">Schedule your first appointment.</p>

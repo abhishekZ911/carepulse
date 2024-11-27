@@ -64,17 +64,15 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
         
         case FormFieldType.PHONE_INPUT: 
         return(
-            <div className="flex">
+            // <div className="flex">
             <FormControl>
                 <PhoneInput
                 value={field.value as E164Number | undefined}
                 onChange={field.onChange}
-                defaultCountry='IN'
                 placeholder = {props.placeholder}
-                international
                 className="input-phone w-full"/>
             </FormControl>
-            </div>
+            // </div>
             
         )
 
